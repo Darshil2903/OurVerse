@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OurVerse — 3D Diagnostics</title>
+<style>
+body{max-width:780px;margin:35px auto;padding:0 20px;background:#261b32;color:#fff;font:16px/1.6 system-ui,sans-serif}
+h1{color:#ffdf9a}.result{margin:12px 0;padding:16px;border-radius:12px;background:#493350;white-space:pre-wrap;overflow-wrap:anywhere}.ok{border-left:4px solid #7ee2b2}.bad{border-left:4px solid #ffaaa7}
+code,a{color:#ffdf9a}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head><body><h1>OurVerse 3D checker</h1>
+<p>This version uses the internet to load the Three.js library. Your characters and background are stored locally in this folder. Model files and WebGL are tested separately.</p>
+<div id="results"></div>
+<p><a href="./index.html">← Homepage</a> &nbsp; · &nbsp; <a href="./index_unpkg.html">Try alternate CDN</a></p>
+<script type="module">
+const root=document.getElementById('results');
+function result(name,ok,message) {
+ const div=document.createElement('div');div.className='result '+(ok?'ok':'bad');
+ div.textContent=(ok?'✓ PASS':'✗ FAIL')+' — '+name+'\n'+message;root.append(div);
+}
+result('Local server',location.protocol==='http:'||location.protocol==='https:', location.href);
+for(const name of ['models/boy.glb','models/girl.glb','assets/bg.png']){
+ try{const r=await fetch('./'+name,{method:'HEAD',cache:'no-store'});result(name,r.ok,`HTTP ${r.status} · ${r.headers.get('content-length')||'?'} bytes`)}
+ catch(e){result(name,false,String(e))}
+}
+try { const canvas=document.createElement('canvas');const gl=canvas.getContext('webgl2')||canvas.getContext('webgl');
+ result('WebGL',!!gl,gl?`Version: ${gl.getParameter(gl.VERSION)}`:'No WebGL context. In Chrome open chrome://settings/system, turn on “Use graphics acceleration when available”, relaunch, then inspect chrome://gpu.'); }
+catch(e){result('WebGL',false,String(e))}
+try{const THREE=await import('three');const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');
+ result('Three.js modules (CDN)',!!GLTFLoader,`Three.js revision ${THREE.REVISION}, GLTFLoader ready`)}
+catch(e){result('Three.js modules (CDN)',false,`Cannot import Three.js: ${e}. Check network or switch to index_unpkg.html.`)}
+</script></body></html>

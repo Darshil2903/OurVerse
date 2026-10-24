@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#ba4b84" />
+  <meta name="description" content="OurVerse — a little world for the two of us." />
+  <title>OurVerse · Our little world</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Lobster+Two:ital,wght@1,700&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+  <!-- Library delivered by a public CDN: no local npm/package installation needed. -->
+  <script type="importmap">
+    {"imports":{
+      "three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }}
+  </script>
+</head>
+<body>
+  <main class="app-shell" id="app">
+    <div class="startup-warning" id="startupWarning" role="alert" hidden>
+      <strong>3D characters couldn't start.</strong>
+      <p id="startupWarningText">Unable to start 3D. Check your internet connection and WebGL/graphics acceleration. Open the checker below.</p>
+      <a href="./check.html" target="_blank" rel="noopener">Open 3D checker</a> · <a href="./index_unpkg.html">Try alternate CDN</a>
+    </div>
+    <div class="background-art" aria-hidden="true"></div>
+    <div class="color-glaze" aria-hidden="true"></div>
+    <div class="sky-glow" aria-hidden="true"></div>
+
+    <section class="hero" aria-label="OurVerse welcome page">
+      <div class="character-stage left-stage" id="boyStage" aria-label="Interactive 3D boy">
+        <canvas id="boyCanvas" aria-label="3D boy portrait with cursor tracking"></canvas>
+        <div class="load-indicator" id="boyLoading"><span class="load-circle"></span> Bringing him to life…</div>
+      </div>
+
+      <div class="character-stage right-stage" id="girlStage" aria-label="Interactive 3D girl">
+        <canvas id="girlCanvas" aria-label="3D girl portrait with cursor tracking"></canvas>
+        <div class="load-indicator" id="girlLoading"><span class="load-circle"></span> Bringing her to life…</div>
+      </div>
+
+      <div class="center-piece">
+        <div class="sparkles sparkles-a" aria-hidden="true"><span>✦</span><span>♡</span><span>♪</span></div>
+        <p class="overline">A LITTLE UNIVERSE, JUST FOR US</p>
+        <h1 class="brand-name">OurVerse</h1>
+        <svg class="brand-underline" viewBox="0 0 540 74" aria-hidden="true" focusable="false">
+          <path d="M23 19 C121 83 241 60 292 37 C345 10 381 6 411 35 C443 61 454 59 486 35" fill="none" stroke="#fff0ce" stroke-width="6" stroke-linecap="round" />
+          <path d="M411 34 C387 13 389 -1 407 3 C418 5 421 15 422 20 C432 2 450 6 448 23 C446 42 419 55 412 59 C408 52 386 39 382 28 C378 17 398 14 411 34Z" fill="none" stroke="#fff6dd" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="little-doodles" aria-hidden="true"><span class="doodle-music">♫</span><span class="doodle-star">✧</span><span class="doodle-heart">♡</span><span class="doodle-note">♪</span></div>
+        <button class="start-button" id="startButton" type="button" aria-label="Start the OurVerse experience">
+          <span class="btn-shimmer"></span><span class="start-word">Start</span><svg viewBox="0 0 32 32" width="31" height="31" aria-hidden="true"><path d="M5 16h21m-9-9 9 9-9 9" stroke="currentColor" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <p class="tagline">A story made of little moments <span>♡</span></p>
+      </div>
+
+      <div class="forefront" aria-hidden="true">
+        <div class="woven-mat"></div>
+        <div class="lantern"><div class="lantern-top"></div><div class="lantern-light"></div><div class="lantern-base"></div></div>
+        <span class="flower flower-one">✿</span><span class="flower flower-two">✿</span><span class="flower flower-three">✿</span>
+        <div class="memory-book"><span>♡</span></div><div class="headphones-prop"><span></span></div>
+      </div>
+    </section>
+
+    <button type="button" class="settings-toggle" id="tuneButton" aria-label="Open 3D position settings" title="Adjust character size and position (D)">⚙</button>
+    <aside class="tune-panel" id="tunePanel" hidden aria-label="Character placement adjustments">
+      <div class="tune-header"><strong>Character tuning</strong><button id="closeTune" aria-label="Close tuning panel">×</button></div>
+      <p class="tune-subtitle">Adjust your actual GLB models live. Saved in this browser.</p>
+      <div class="tune-switch"><button type="button" class="selected" data-side="boy">Boy</button><button type="button" data-side="girl">Girl</button></div>
+      <div class="slider-list">
+        <label>Size / zoom <output data-out="zoom"></output><input id="zoomSlider" type="range" min="0.70" max="1.75" step="0.01" /></label>
+        <label>Horizontal position <output data-out="shiftX"></output><input id="shiftXSlider" type="range" min="-0.35" max="0.35" step="0.01" /></label>
+        <label>Vertical position <output data-out="shiftY"></output><input id="shiftYSlider" type="range" min="-0.32" max="0.32" step="0.01" /></label>
+        <label>Body angle <output data-out="angle"></output><input id="angleSlider" type="range" min="-18" max="18" step="1" /></label>
+        <label>Head turn strength <output data-out="headYaw"></output><input id="headYawSlider" type="range" min="0" max="12" step="0.5" /></label>
+        <label>Eye turn strength <output data-out="eyeYaw"></output><input id="eyeYawSlider" type="range" min="0" max="20" step="0.5" /></label>
+      </div>
+      <label class="check-row"><input id="trackingToggle" type="checkbox" checked /> Cursor tracking</label>
+      <div class="test-looks"><button type="button" data-look="-1,0">←</button><button type="button" data-look="0,1">↑</button><button type="button" data-look="0,0">•</button><button type="button" data-look="0,-1">↓</button><button type="button" data-look="1,0">→</button></div>
+      <p class="rig-diagnostics" id="rigDiagnostics">Loading rig names…</p>
+      <div class="tune-actions"><button type="button" id="resetTuning">Reset model</button><button type="button" id="copyTuning">Copy settings</button></div>
+    </aside>
+
+    <div class="experience-screen" id="experienceScreen" aria-hidden="true">
+      <div class="experience-card" role="dialog" aria-modal="true" aria-labelledby="chapterTitle">
+        <span class="experience-star">✧ ♡ ✧</span>
+        <p>OUR LITTLE UNIVERSE</p>
+        <h2 id="chapterTitle">Every story has a beginning…</h2>
+        <p class="experience-description">The landing page is ready. This is where we can connect the next chapter of OurVerse.</p>
+        <button type="button" id="goBackButton" class="back-button">← Back to our world</button>
+      </div>
+    </div>
+    <p id="globalStatus" class="sr-only" aria-live="polite"></p>
+  </main>
+  <script>
+    // Inline watchdog runs even when module imports fail; never hide both missing models silently.
+    window.__ourverseAppStarted = false;
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (!window.__ourverseAppStarted) {
+          var el = document.getElementById('startupWarning');
+          var msg = document.getElementById('startupWarningText');
+          if (msg) msg.textContent = 'Three.js could not load from the CDN. Confirm internet access, use the alternate-CDN page, and check browser WebGL support at check.html.';
+          if (el) el.hidden = false;
+          document.querySelectorAll('.load-indicator').forEach(function (node) {
+            node.innerHTML = 'The 3D library did not start. See the message above.';
+            node.classList.add('error');
+          });
+        }
+      }, 9500);
+    });
+  </script>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
