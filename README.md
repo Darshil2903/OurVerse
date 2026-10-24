@@ -14,9 +14,32 @@
 
 OurVerse is a web app where two people pair their accounts and share one music world: songs, playlists and personal voice recordings, just for the two of them.
 
-The first piece is the **landing page**: two hand-rigged 3D characters on a sunset beach whose heads and eyes follow your cursor in real time.
+It opens on a **3D landing page**: two hand-rigged characters on a sunset beach whose heads and eyes follow your cursor in real time.
+
+Built with **TypeScript**, **Vite**, **three.js** and **Firebase**.
 
 ## What's built
+
+### Pairing
+- **Firebase Auth** with persistent sessions
+- **Unique invite codes:** one partner creates a code, the other joins with it
+- **Transaction-safe joins** and a **one-pair-per-user** rule, so two people can never claim the same pair at once
+- **Pair state is independent of login sessions:** signing out or switching devices never breaks the pair
+
+### Private by design
+- **Pair-isolated data:** Firestore documents and Cloud Storage files are readable and writable only by the two members of that pair
+- **Security Rules with UID authorization** enforce that on the server, not just in the app
+- **App Check** blocks requests that don't come from the real app
+- **Validated private uploads** for personal voice recordings
+
+### Music
+- **Spotify integration** for songs and playlists
+- **Personal recordings** kept in a separate data flow from Spotify content
+
+### Performance
+- **Scoped real-time listeners** that subscribe only to the data on screen, with **pagination** and **incremental updates**
+- **Debounced search** and **caching**
+- **Optimized GLB models and textures**, **lazy loading** and **mobile fallbacks**
 
 ### Cursor-tracking 3D characters
 - **Two custom characters** (boy and girl) rigged in **Blender** with a `Root → Neck → Head → Eye.L / Eye.R` armature and exported as **GLB**.
@@ -57,13 +80,7 @@ Concept art for the full app: the landing scene, and the music home with feature
 
 ## Roadmap
 
-In progress:
-- [ ] **Pairing:** Firebase Auth with persistent sessions, unique invite codes, transaction-safe joins and a one-pair-per-user rule
-- [ ] **Private data:** pair-isolated Firestore and Cloud Storage, Security Rules with UID checks, and App Check
-- [ ] **Music:** Spotify integration plus a separate flow for personal voice recordings
-- [ ] **Music home UI** based on the concept above
-- [ ] **Performance:** compress the GLB models and textures (Draco/meshopt, KTX2) and lazy-load them
-- [ ] Move to **TypeScript + Vite**
+- [ ] Music home UI matching the concept art above
 
 ## Run it locally
 
