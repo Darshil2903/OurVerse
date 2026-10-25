@@ -12,7 +12,7 @@
   <img src="docs/landing-page.png" alt="OurVerse landing page: two 3D characters on a sunset beach" width="860" />
 </p>
 
-OurVerse is a web app where two people pair their accounts and share one music world: songs, playlists and personal voice recordings, just for the two of them.
+OurVerse is a web app for two people. They pair their accounts with an invite code, share their favourite Spotify songs with each other, and send recordings of their own voice singing the same songs. Everything stays private to the two of them.
 
 It opens on a **3D landing page**: two hand-rigged characters on a sunset beach whose heads and eyes follow your cursor in real time.
 
@@ -33,8 +33,9 @@ Built with **TypeScript**, **Vite**, **three.js** and **Firebase**.
 - **Validated private uploads** for personal voice recordings
 
 ### Music
-- **Spotify integration** for songs and playlists
-- **Personal recordings** kept in a separate data flow from Spotify content
+- **Share favourite songs** from Spotify with your partner
+- **Sing them yourself:** record your own voice singing the same song and send it to your partner as a private upload
+- Spotify content and personal recordings are kept in **separate data flows**
 
 ### Performance
 - **Scoped real-time listeners** that subscribe only to the data on screen, with **pagination** and **incremental updates**
